@@ -1,0 +1,38 @@
+# create Table using this query
+
+select create table icc_world_cup
+(
+Team_1 Varchar(20),
+Team_2 Varchar(20),
+Winner Varchar(20)
+);
+INSERT INTO icc_world_cup values('India','SL','India');
+INSERT INTO icc_world_cup values('SL','Aus','Aus');
+INSERT INTO icc_world_cup values('SA','Eng','Eng');
+INSERT INTO icc_world_cup values('Eng','NZ','NZ');
+INSERT INTO icc_world_cup values('Aus','India','India');
+
+
+# Query 1:
+
+SELECT name, COUNT(name) AS match_played,sum(matches_won) as match_won, COUNT(name)- sum(matches_won) as matches_lost
+FROM (
+    SELECT team_1 AS name, case when team_1=winner then 1 else 0 end as matches_won FROM icc_world_cup
+    UNION ALL
+    SELECT team_2 AS name, case when team_2=winner then 1 else 0 end as matches_won FROM icc_world_cup
+) AS B
+GROUP BY name
+
+# Query 2:
+
+select B.name , B.match_played,coalesce(A.winners,0) as matches_won, (B.match_played - coalesce(A.winners,0)) as lost_matches from (
+(select winner,count(winner) as winners from icc_world_cup group by winner) as A 
+right join
+(SELECT name, COUNT(name)AS match_played 
+FROM (
+    SELECT team_1 AS name FROM icc_world_cup
+    UNION ALL
+    SELECT team_2 AS name FROM icc_world_cup
+) AS B
+GROUP BY name) as B
+on A.winner=B.name)
