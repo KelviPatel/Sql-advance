@@ -10,3 +10,8 @@ Question 2- Given : <br/><img width="315" alt="image" src="https://github.com/us
 <br>
 Required:<br><img width="383" alt="image" src="https://github.com/user-attachments/assets/04776309-7f7d-4c47-9af5-6b8393bba743" />
 <br>
+<br>
+Question 3- Given : <br/><img width="537" alt="image" src="https://github.com/user-attachments/assets/06903561-0b1c-4318-bf10-6d43bbe9344b" />
+<br>
+Required:<br><img width="353" alt="image" src="https://github.com/user-attachments/assets/3b9e45f4-8739-49b8-8fd6-02d829fa1cd7" />
+<br>
