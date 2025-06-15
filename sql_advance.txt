@@ -1,5 +1,5 @@
 
-======================================================================Question 1=============================================================================
+======================================================================Question 1============================================================================
 
 # create Table using this query
 
@@ -41,7 +41,7 @@ GROUP BY name) as B
 on A.winner=B.name)
 
 
-======================================================================Question 2=============================================================================
+======================================================================Question 2============================================================================
 
 create table customer_orders (
 order_id integer,
@@ -81,5 +81,38 @@ on A.customer_id=B.customer_id
 group by A.order_date
 order by A.order_date
 
+
+======================================================================Question 3============================================================================
+
+
+create table entries ( 
+name varchar(20),
+address varchar(20),
+email varchar(20),
+floor int,
+resources varchar(10));
+
+insert into entries 
+values ('A','Bangalore','A@gmail.com',1,'CPU'),('A','Bangalore','A1@gmail.com',1,'CPU'),('A','Bangalore','A2@gmail.com',2,'DESKTOP')
+,('B','Bangalore','B@gmail.com',2,'DESKTOP'),('B','Bangalore','B1@gmail.com',2,'DESKTOP'),('B','Bangalore','B2@gmail.com',1,'MONITOR')
+
+
+
+with total_visit as
+(select name,count(name) as total_visits from entries
+group by name),
+max_visits as
+(select name,floor,count(1),rank() over( partition by name order by count(1) desc)  as ranks from entries
+group by name,floor),
+resource as
+(select name,string_agg(distinct resources, ', ') as resources_used
+from entries 
+group by name)
+select total_visit.name,max_visits.floor as most_visited_floor,resources_used from max_visits
+inner join total_visit on total_visit.name=max_visits.name
+inner join resource on resource.name=total_visit.name
+where ranks=1
+ 
+select * from entries
 
 
