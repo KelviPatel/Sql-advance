@@ -116,3 +116,8 @@ where ranks=1
 select * from entries
 
 
+======================================================================Question 4============================================================================
+write a query to provide a date for nth occurance of sunday in future from a given date
+
+SELECT '2025-07-02'::DATE 
+       + ((7 - DATE_PART('dow', DATE '2025-07-02')) + (2 * 7)) * INTERVAL '1 day' AS result_date;
