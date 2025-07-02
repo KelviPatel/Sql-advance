@@ -15,3 +15,10 @@ Question 3- Given : <br/><img width="537" alt="image" src="https://github.com/us
 <br>
 Required:<br><img width="353" alt="image" src="https://github.com/user-attachments/assets/3b9e45f4-8739-49b8-8fd6-02d829fa1cd7" />
 <br>
+<br>
+Question 4- Given : 
+Required:<br><img width="567" alt="image" src="https://github.com/user-attachments/assets/1b44e983-27cc-4dd1-8e98-0153be20020e" />
+<br>![image](https://github.com/user-attachments/assets/57c460c4-3baf-442b-b03c-8c7bced9ee3c)
+<br>
+<br>
+
