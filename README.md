@@ -6,7 +6,8 @@ Required:<br>
 <img width="392" alt="image" src="https://github.com/user-attachments/assets/d3431f01-d117-4127-9002-63ff2602eb83" /><br>
 <br>
 <br>
-# create Table using this query
+
+## Create Table using this query
 
 select create table icc_world_cup
 (
@@ -53,6 +54,7 @@ Required:<br><img width="383" alt="image" src="https://github.com/user-attachmen
 <br>
 <br>
 
+## Create Table using this query
 create table customer_orders (
 order_id integer,
 customer_id integer,
@@ -60,13 +62,13 @@ order_date date,
 order_amount integer
 );
 
+
 insert into customer_orders values(1,100,cast('2022-01-01' as date),2000),(2,200,cast('2022-01-01' as date),2500),(3,300,cast('2022-01-01' as date),2100)
 ,(4,100,cast('2022-01-02' as date),2000),(5,400,cast('2022-01-02' as date),2200),(6,500,cast('2022-01-02' as date),2700)
 ,(7,100,cast('2022-01-03' as date),3000),(8,400,cast('2022-01-03' as date),1000),(9,600,cast('2022-01-03' as date),3000)
 ;
 
-select * from customer_orders
-
+## Query 1
 select A.order_date,total_customers,new_customer, total_customers - new_customer as repeated_customers from
 (select order_date,count(customer_id) as new_customer from customer_orders as o
 where o.customer_id not in (select customer_id from customer_orders as b where o.order_date>b.order_date)
@@ -76,7 +78,7 @@ join
 group by order_date) B
 on A.order_date=B.order_date
 
-
+## Query 2
 select A.order_date,
 sum(case when order_date=new_customer then 1 else 0 end) as new_customer,
 sum(case when order_date!=new_customer then 1 else 0 end) as old_customer
@@ -94,11 +96,14 @@ order by A.order_date
 <br>
 <br>
 
+
 Question 3- Given : <br/><img width="537" alt="image" src="https://github.com/user-attachments/assets/06903561-0b1c-4318-bf10-6d43bbe9344b" />
 <br>
 Required:<br><img width="353" alt="image" src="https://github.com/user-attachments/assets/3b9e45f4-8739-49b8-8fd6-02d829fa1cd7" />
 <br>
 <br>
+
+## Create Table using this query
 create table entries ( 
 name varchar(20),
 address varchar(20),
@@ -111,24 +116,24 @@ values ('A','Bangalore','A@gmail.com',1,'CPU'),('A','Bangalore','A1@gmail.com',1
 ,('B','Bangalore','B@gmail.com',2,'DESKTOP'),('B','Bangalore','B1@gmail.com',2,'DESKTOP'),('B','Bangalore','B2@gmail.com',1,'MONITOR')
 
 
-
+## Query 1
 with total_visit as
 (select name,count(name) as total_visits from entries
 group by name),
 max_visits as
 (select name,floor,count(1),rank() over( partition by name order by count(1) desc)  as ranks from entries
 group by name,floor),
+
 resource as
 (select name,string_agg(distinct resources, ', ') as resources_used
 from entries 
 group by name)
+
 select total_visit.name,max_visits.floor as most_visited_floor,resources_used from max_visits
 inner join total_visit on total_visit.name=max_visits.name
 inner join resource on resource.name=total_visit.name
 where ranks=1
  
-select * from entries
-
 
 <br>
 <br>
