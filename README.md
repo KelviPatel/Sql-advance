@@ -6,22 +6,146 @@ Required:<br>
 <img width="392" alt="image" src="https://github.com/user-attachments/assets/d3431f01-d117-4127-9002-63ff2602eb83" /><br>
 <br>
 <br>
+# create Table using this query
+
+select create table icc_world_cup
+(
+Team_1 Varchar(20),
+Team_2 Varchar(20),
+Winner Varchar(20)
+);
+INSERT INTO icc_world_cup values('India','SL','India');
+INSERT INTO icc_world_cup values('SL','Aus','Aus');
+INSERT INTO icc_world_cup values('SA','Eng','Eng');
+INSERT INTO icc_world_cup values('Eng','NZ','NZ');
+INSERT INTO icc_world_cup values('Aus','India','India');
+
+
+# Query 1:
+
+SELECT name, COUNT(name) AS match_played,sum(matches_won) as match_won, COUNT(name)- sum(matches_won) as matches_lost
+FROM (
+    SELECT team_1 AS name, case when team_1=winner then 1 else 0 end as matches_won FROM icc_world_cup
+    UNION ALL
+    SELECT team_2 AS name, case when team_2=winner then 1 else 0 end as matches_won FROM icc_world_cup
+) AS B
+GROUP BY name
+
+# Query 2:
+
+select B.name , B.match_played,coalesce(A.winners,0) as matches_won, (B.match_played - coalesce(A.winners,0)) as lost_matches from (
+(select winner,count(winner) as winners from icc_world_cup group by winner) as A 
+right join
+(SELECT name, COUNT(name)AS match_played 
+FROM (
+    SELECT team_1 AS name FROM icc_world_cup
+    UNION ALL
+    SELECT team_2 AS name FROM icc_world_cup
+) AS B
+GROUP BY name) as B
+on A.winner=B.name)
+<br>
+<br>
+
 Question 2- Given : <br/><img width="315" alt="image" src="https://github.com/user-attachments/assets/bd195304-fb4f-4f44-85e8-d45f525454ab" />
 <br>
 Required:<br><img width="383" alt="image" src="https://github.com/user-attachments/assets/04776309-7f7d-4c47-9af5-6b8393bba743" />
 <br>
 <br>
+
+create table customer_orders (
+order_id integer,
+customer_id integer,
+order_date date,
+order_amount integer
+);
+
+insert into customer_orders values(1,100,cast('2022-01-01' as date),2000),(2,200,cast('2022-01-01' as date),2500),(3,300,cast('2022-01-01' as date),2100)
+,(4,100,cast('2022-01-02' as date),2000),(5,400,cast('2022-01-02' as date),2200),(6,500,cast('2022-01-02' as date),2700)
+,(7,100,cast('2022-01-03' as date),3000),(8,400,cast('2022-01-03' as date),1000),(9,600,cast('2022-01-03' as date),3000)
+;
+
+select * from customer_orders
+
+select A.order_date,total_customers,new_customer, total_customers - new_customer as repeated_customers from
+(select order_date,count(customer_id) as new_customer from customer_orders as o
+where o.customer_id not in (select customer_id from customer_orders as b where o.order_date>b.order_date)
+group by order_date) A
+join 
+(select order_date,count(customer_id) as total_customers from customer_orders as o
+group by order_date) B
+on A.order_date=B.order_date
+
+
+select A.order_date,
+sum(case when order_date=new_customer then 1 else 0 end) as new_customer,
+sum(case when order_date!=new_customer then 1 else 0 end) as old_customer
+from
+(
+(select * from customer_orders) A
+join
+(select customer_id,min(order_date) as new_customer from customer_orders
+group by customer_id) B
+on A.customer_id=B.customer_id
+)
+group by A.order_date
+order by A.order_date
+
+<br>
+<br>
+
 Question 3- Given : <br/><img width="537" alt="image" src="https://github.com/user-attachments/assets/06903561-0b1c-4318-bf10-6d43bbe9344b" />
 <br>
 Required:<br><img width="353" alt="image" src="https://github.com/user-attachments/assets/3b9e45f4-8739-49b8-8fd6-02d829fa1cd7" />
 <br>
 <br>
+create table entries ( 
+name varchar(20),
+address varchar(20),
+email varchar(20),
+floor int,
+resources varchar(10));
+
+insert into entries 
+values ('A','Bangalore','A@gmail.com',1,'CPU'),('A','Bangalore','A1@gmail.com',1,'CPU'),('A','Bangalore','A2@gmail.com',2,'DESKTOP')
+,('B','Bangalore','B@gmail.com',2,'DESKTOP'),('B','Bangalore','B1@gmail.com',2,'DESKTOP'),('B','Bangalore','B2@gmail.com',1,'MONITOR')
+
+
+
+with total_visit as
+(select name,count(name) as total_visits from entries
+group by name),
+max_visits as
+(select name,floor,count(1),rank() over( partition by name order by count(1) desc)  as ranks from entries
+group by name,floor),
+resource as
+(select name,string_agg(distinct resources, ', ') as resources_used
+from entries 
+group by name)
+select total_visit.name,max_visits.floor as most_visited_floor,resources_used from max_visits
+inner join total_visit on total_visit.name=max_visits.name
+inner join resource on resource.name=total_visit.name
+where ranks=1
+ 
+select * from entries
+
+
+<br>
+<br>
+
 Question 4- Given : 
 Required:<br><img width="567" alt="image" src="https://github.com/user-attachments/assets/1b44e983-27cc-4dd1-8e98-0153be20020e" />
 <br>![image](https://github.com/user-attachments/assets/57c460c4-3baf-442b-b03c-8c7bced9ee3c)
 <br>
 <br>
 
+write a query to provide a date for nth occurance of sunday in future from a given date
+
+SELECT '2025-07-02'::DATE 
+       + ((7 - DATE_PART('dow', DATE '2025-07-02')) + (2 * 7)) * INTERVAL '1 day' AS result_date;
+
+<br>
+<br>
 Question 5- Given : 
 Required:<br><img width="1920" height="1696" alt="image" src="https://github.com/user-attachments/assets/8bb1765b-098c-43ae-b31b-8a6b6bcfdaf5" />
 <br>
