@@ -243,5 +243,8 @@ SELECT '2025-07-02'::DATE
 <br><img width="1920" height="4092" alt="image" src="https://github.com/user-attachments/assets/2f42e593-7fd6-4b96-8447-c7abe098e3c9" />
 <br>
 
+# Question 24- 
+<br><img width="1920" height="2439" alt="image" src="https://github.com/user-attachments/assets/ae7db48a-5fe7-4777-b09b-dcbf6976c5be" />
+<br>
 
 
